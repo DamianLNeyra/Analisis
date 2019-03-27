@@ -30,6 +30,15 @@ def verificar():
     return render_template('index.html')
    else :
     return render_template('login.html')
+
+@app.route('/envios')
+def envios():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM paquete ')
+    data = cur.fetchall()
+    cur.close()
+    return  render_template('index.html', contacts = data)
+
 @app.route('/buscarCliente', methods=['GET', 'POST'])
 def buscarCliente():
     cedula= request.form['cedula']
