@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 import time
+import datetime
 
 # initializations
 app = Flask(__name__)
@@ -66,7 +67,7 @@ def add_contact():
         cur.execute("INSERT INTO cliente (cedula, nombre, apellidoP,apellidoD, direccion, telefono) VALUES (%s,%s,%s,%s,%s,%s)", (cedula, name, apellidoA,apellidoB,direccion,phone))
         mysql.connection.commit()
         flash('Contact Added successfully')
-        return redirect(url_for('Index'))
+        return render_template('index.html',contacts = ())
 
 @app.route('/edit/<cedula>', methods = ['POST', 'GET'])
 def get_contact(cedula):
@@ -99,31 +100,34 @@ def delete_contact(cedula):
     flash('Contact Removed Successfully')
     return redirect(url_for('index'))
 
-@app.route('/lista_paquetes')
-def lista_paquetes():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM paquete')
-    data = cur.fetchall()
-    cur.close()
-    return render_template('index.html', contacts = data)
-        
-
 
 @app.route('/add_paquete', methods = ['POST', 'GET'])
 def add_paquete():
-    if request.method == 'POST':
+    if request.method == 'POST':        
         cedula = request.form['cedula']
-        fechaDespacho = time.strftime("%Y/%m/%D")
+        fecha= datetime.datetime.now()
+        print(fecha)
         ciudadOrigen = request.form['ciudadOrigen']
         ciudadDestino = request.form['ciudadDestino']
         Npiezas = request.form['Npiezas']
         direccion = request.form['direccion']
         nombreRecibe = request.form['nombreRecibe']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO paquete (cedula, fecha_Despacho,ciudad_origen, ciudad_destino,Npiezas, direccion_destino,nombre_recibe) VALUES ("+cedula+","+fechaDespacho+",%s,%s,%s,%s,%s)", ( ciudadOrigen,ciudadDestino,Npiezas,direccion,nombreRecibe))
-        mysql.connection.commit()
+        try:
+            cur.execute("INSERT INTO paquete (cedula, fecha_Despacho,ciudad_origen, ciudad_destino,Npiezas, direccion_destino,nombre_recibe) VALUES ('"+cedula+"','"+str(fecha)+"',%s,%s,%s,%s,%s)", ( ciudadOrigen,ciudadDestino,Npiezas,direccion,nombreRecibe))
+            mysql.connection.commit()
+        except Exception as e:
+            raise(e)
         flash('Package Added successfully')
-        return render_template('index.html',contacts = ())
+    return render_template('index.html',contacts = ())
+
+@app.route('/envios/<string:cedula>', methods=['GET', 'POST'])
+def envios(cedula):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM paquete where cedula = '+cedula)
+    data = cur.fetchall()
+    cur.close()
+    return  render_template('lista_paquetes.html', contacts = data)
 # starting the app
 if __name__ == "__main__":
     app.run(port=3307, debug=True)
