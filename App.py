@@ -37,8 +37,14 @@ def verificar():
 def buscarCliente():
     cedula= request.form['cedula']
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM cliente where cedula = '+cedula)
-    data = cur.fetchall()
+    data=()
+    try:
+        cur.execute('SELECT * FROM cliente where cedula = '+cedula)
+        data = cur.fetchall()
+    except cur.Exception as identifier:
+        flash('Error de datos')
+    
+    
     cur.close()
     return  render_template('index.html', contacts = data)
 
