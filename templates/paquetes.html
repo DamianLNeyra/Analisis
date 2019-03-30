@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <div class="row">
+    <div class="col-md-5">
+      {% with messages = get_flashed_messages()  %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      <div class="card card-body">
+        <form action="{{url_for('add_paquete')}}" method="POST">
+         
+          <div class="form-group">
+            <input type="text" class="form-control" name="cedula" placeholder="Cedula">
+          </div>
+          <div class="form-group">
+             <input type="date" value="2017-06-01" class="form-control" name="fechaDespacho" placeholder="Fecha">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="ciudadOrigen" placeholder="Ciudad de Origen">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="ciudadDestino" placeholder="Ciudad de destino">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="Npiezas" placeholder="Numero de Piezas">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="direccion" placeholder="Direccion">
+          </div>
+          <div class="form-group">
+            <input type="tel" class="form-control" name="nombreRecibe" placeholder="Nombre de la persona que recibe">
+          </div>
+          <button class="btn btn-primary btn-block">
+            Registrar paquete
+          </button>
+        </form>
+      </div>
+    </div>
+  
+</div>
+</div>
+{% endblock %}
