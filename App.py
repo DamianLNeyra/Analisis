@@ -34,14 +34,6 @@ def verificar():
    else :
     return render_template('login.html')
 
-@app.route('/envios')
-def envios():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM paquete ')
-    data = cur.fetchall()
-    cur.close()
-    return  render_template('index.html', contacts = data)
-
 @app.route('/buscarCliente', methods=['GET', 'POST'])
 def buscarCliente():
     cedula= request.form['cedula']
@@ -81,7 +73,7 @@ def add_contact():
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO cliente (cedula, nombre, apellidoP,apellidoD, direccion, telefono) VALUES (%s,%s,%s,%s,%s,%s)", (cedula, name, apellidoA,apellidoB,direccion,phone))
         mysql.connection.commit()
-        flash('Contact Added successfully')
+        flash('Cliente añadido exitosamente')
         return render_template('index.html',contacts = ())
 
 @app.route('/edit/<cedula>', methods = ['POST', 'GET'])
@@ -103,7 +95,7 @@ def update_contact(cedula):
         direccion = request.form['direccion']
         cur = mysql.connection.cursor()
         cur.execute(" UPDATE cliente SET nombre = %s,apellidoP = %s,apellidoD = %s,telefono =%s,direccion =%s WHERE cedula ="+cedula, (nombre, apellidoA, apellidoB,telefono,direccion))
-        flash('Contact Updated Successfully')
+        flash('Cliente actualizado')
         mysql.connection.commit()
         return render_template('index.html',contacts = ())
 
@@ -124,7 +116,7 @@ def add_paquete():
             mysql.connection.commit()
         except Exception as e:
             raise(e)
-        flash('Package Added successfully')
+        flash('Paquete añadido exitosamente')
     return render_template('index.html',contacts = ())
 
 @app.route('/envios/<string:cedula>', methods=['GET', 'POST'])
