@@ -92,15 +92,6 @@ def update_contact(cedula):
         mysql.connection.commit()
         return render_template('index.html',contacts = ())
 
-@app.route('/delete/<string:cedula>', methods = ['POST','GET'])
-def delete_contact(cedula):
-    cur = mysql.connection.cursor()
-    cur.execute('DELETE FROM clientes WHERE cedula = {0}'.format(cedula))
-    mysql.connection.commit()
-    flash('Contact Removed Successfully')
-    return redirect(url_for('index'))
-
-
 @app.route('/add_paquete', methods = ['POST', 'GET'])
 def add_paquete():
     if request.method == 'POST':        

@@ -28,7 +28,7 @@
         <div class= "card card-body" style="margin:10px;">
             <form action="{{url_for('buscarCliente')}}" method="POST">
                 <div class="form-group">
-                  <input type="text" class="form-control" name="cedula" placeholder="Cedula">
+                  <input type="text" class="form-control" name="cedula" placeholder="Cedula" required>
                 </div>
                 <button class="btn btn-primary btn-block">
                   Buscar  
@@ -50,22 +50,22 @@
                     <a></a>
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" name="cedula" placeholder="Cedula">
+                    <input type="text" class="form-control" name="cedula" placeholder="Cedula" required>
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" name="nombre" placeholder="Nombre">
+                    <input type="text" class="form-control" name="nombre" placeholder="Nombre" required>
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" name="apellidoA" placeholder="Primer apellido">
+                    <input type="text" class="form-control" name="apellidoA" placeholder="Primer apellido" required>
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" name="apellidoB" placeholder="Segundo apellido">
+                    <input type="text" class="form-control" name="apellidoB" placeholder="Segundo apellido" required>
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" name="direccion" placeholder="Dirección">
+                    <input type="text" class="form-control" name="direccion" placeholder="Dirección" required>
                   </div>
                   <div class="form-group">
-                    <input type="tel" class="form-control" name="telefono" placeholder="Teléfono">
+                    <input type="tel" class="form-control" name="telefono" placeholder="Teléfono" required>
                   </div>
                   <button class="btn btn-primary btn-block">
                     Registrar cliente 
@@ -82,13 +82,13 @@
       <table class="table table-striped table-hover table-bordered table-sm bg-white">
         <thead>
           <tr>
-            <td>Cedula</td>
-            <td>Nombre</td>
-            <td>Apellido</td>
-            <td>Segundo Apellido</td>
-            <td>Telefono</td>
-            <td>Direccion</td>
-            <td>Opciones</td>
+            <td><i><b>Cedula</b></i></td>
+            <td><i><b>Nombre</b></i></td>
+            <td><i><b>Apellido</b></i></td>
+            <td><i><b>Segundo Apellido</b></i></td>
+            <td><i><b>Telefono</b></i></td>
+            <td><i><b>Direccion</b></i></td>
+            <td><i><b>Opciones</b></i></td>
           </tr>
         </thead>
         <tbody>
@@ -102,7 +102,6 @@
             <td>{{contact.5}}</td>
             <td>
               <a href="/edit/{{contact.0}}" class="btn btn-secondary">Editar</a>
-              <a href="/delete/{{contact.0}}" class="btn btn-danger btn-delete">Borrar</a>
               <a href="/envios/{{contact.0}}" class="btn btn-secondary" >Listar de paquetes</a>
             </td>
           </tr>
