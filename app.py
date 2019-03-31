@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 #Tuve que arreglar el importe de esta libreria, ya que como se tenia
-#anteriormente era de una version antigua de mysql para flask
-#from flaskext.mysql import MySQL
+#se usa postgres
 import time
 import datetime
 #Tuve que instalar manualmente esta libreria ya que el requirements.txt no
