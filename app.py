@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 import time
 import datetime
+DATABASE_URL = os.environ['DATABASE_URL']
+
+mysql = psycopg2.connect(DATABASE_URL, sslmode='require')
 #n
 # initializations
 app = Flask(__name__)
@@ -13,7 +16,7 @@ app.config['MYSQL_HOST'] = 'ec2-75-101-131-79.compute-1.amazonaws.com'
 app.config['MYSQL_USER'] = 'jgamnxsjtrmrsk'
 app.config['MYSQL_PASSWORD'] = 'b58c12ebaad31303d9b202e8eda197b66436fac54d779e5531c823abdb3052c4'
 app.config['MYSQL_DB'] = 'd6pl9uevndo9so'
-mysql = MySQL(app)
+#mysql = MySQL(app)
 #ndnjjsd
 # settings
 app.secret_key = "mysecretkey"
@@ -38,7 +41,7 @@ def verificar():
 @app.route('/buscarCliente', methods=['GET', 'POST'])
 def buscarCliente():
     cedula= request.form['cedula']
-    cur = mysql.connection.cursor()
+    cur = mysql.cursor()
     data=()
     try:
         cur.execute('SELECT * FROM cliente where cedula = '+cedula)
@@ -52,7 +55,7 @@ def buscarCliente():
 
 @app.route('/index', methods=['POST'])
 def Index():
-    cur = mysql.connection.cursor()
+    cur = mysql.cursor()
     cur.execute('SELECT * FROM cliente')
     data = cur.fetchall()
     cur.close()
@@ -71,7 +74,7 @@ def add_contact():
         direccion = request.form['direccion']
         apellidoA = request.form['apellidoA']
         apellidoB = request.form['apellidoB']
-        cur = mysql.connection.cursor()
+        cur = mysql.cursor()
         cur.execute("INSERT INTO cliente (cedula, nombre, apellidoP,apellidoD, direccion, telefono) VALUES (%s,%s,%s,%s,%s,%s)", (cedula, name, apellidoA,apellidoB,direccion,phone))
         mysql.connection.commit()
         flash('Cliente añadido exitosamente')
@@ -79,7 +82,7 @@ def add_contact():
 
 @app.route('/edit/<cedula>', methods = ['POST', 'GET'])
 def get_contact(cedula):
-    cur = mysql.connection.cursor()
+    cur = mysql.cursor()
     cur.execute('SELECT * FROM cliente WHERE cedula = '+ cedula)
     data = cur.fetchall()
     cur.close()
@@ -94,7 +97,7 @@ def update_contact(cedula):
         apellidoB = request.form['apellidoB']
         telefono = request.form['telefono']
         direccion = request.form['direccion']
-        cur = mysql.connection.cursor()
+        cur = mysql.cursor()
         cur.execute(" UPDATE cliente SET nombre = %s,apellidoP = %s,apellidoD = %s,telefono =%s,direccion =%s WHERE cedula ="+cedula, (nombre, apellidoA, apellidoB,telefono,direccion))
         flash('Cliente actualizado')
         mysql.connection.commit()
@@ -111,7 +114,7 @@ def add_paquete():
         Npiezas = request.form['Npiezas']
         direccion = request.form['direccion']
         nombreRecibe = request.form['nombreRecibe']
-        cur = mysql.connection.cursor()
+        cur = mysql.cursor()
         try:
             cur.execute("INSERT INTO paquete (cedula, fecha_Despacho,ciudad_origen, ciudad_destino,Npiezas, direccion_destino,nombre_recibe) VALUES ('"+cedula+"','"+str(fecha)+"',%s,%s,%s,%s,%s)", ( ciudadOrigen,ciudadDestino,Npiezas,direccion,nombreRecibe))
             mysql.connection.commit()
@@ -122,7 +125,7 @@ def add_paquete():
 
 @app.route('/envios/<string:cedula>', methods=['GET', 'POST'])
 def envios(cedula):
-    cur = mysql.connection.cursor()
+    cur = mysql.cursor()
     cur.execute('SELECT * FROM paquete where cedula = '+cedula)
     data = cur.fetchall()
     cur.close()
