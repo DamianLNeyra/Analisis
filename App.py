@@ -13,7 +13,7 @@ app.config['MYSQL_USER'] = 'jgamnxsjtrmrsk'
 app.config['MYSQL_PASSWORD'] = 'b58c12ebaad31303d9b202e8eda197b66436fac54d779e5531c823abdb3052c4'
 app.config['MYSQL_DB'] = 'd6pl9uevndo9so'
 mysql = MySQL(app)
-
+#ndnjjsd
 # settings
 app.secret_key = "mysecretkey"
 
