@@ -2,9 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 import time
 import datetime
-import os
 import psycopg2
-DATABASE_URL = os.environ['DATABASE_URL']
+DATABASE_URL = 'postgres://jgamnxsjtrmrsk:b58c12ebaad31303d9b202e8eda197b66436fac54d779e5531c823abdb3052c4@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d6pl9uevndo9so'
 
 mysql = psycopg2.connect(DATABASE_URL, sslmode='require')
 #n
