@@ -127,3 +127,5 @@ def envios(cedula):
     cur.close()
     return  render_template('lista_paquetes.html', contacts = data)
 
+if __name__ == "__main__":
+    app.run(port=3307, debug=True)
