@@ -1,1 +1,1 @@
-<web>:<'/'>
+web:run App.py
