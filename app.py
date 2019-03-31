@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 import time
 import datetime
+import os
+import psycopg2
 DATABASE_URL = os.environ['DATABASE_URL']
 
 mysql = psycopg2.connect(DATABASE_URL, sslmode='require')
