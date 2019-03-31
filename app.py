@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_mysqldb import MySQL
+#Tuve que arreglar el importe de esta libreria, ya que como se tenia
+#anteriormente era de una version antigua de mysql para flask
+from flaskext.mysql import MySQL
 import time
 import datetime
+#Tuve que instalar manualmente esta libreria ya que el requirements.txt no
+#las instalo correctamente.
 import psycopg2
 DATABASE_URL = 'postgres://jgamnxsjtrmrsk:b58c12ebaad31303d9b202e8eda197b66436fac54d779e5531c823abdb3052c4@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d6pl9uevndo9so'
 
@@ -13,7 +17,7 @@ PORT = 5000
 DEBUG = False
 # Mysql Connection
 
-app.config['MYSQL_HOST'] = 'ec2-75-101-131-79.compute-1.amazonaws.com' 
+app.config['MYSQL_HOST'] = 'ec2-75-101-131-79.compute-1.amazonaws.com'
 app.config['MYSQL_USER'] = 'jgamnxsjtrmrsk'
 app.config['MYSQL_PASSWORD'] = 'b58c12ebaad31303d9b202e8eda197b66436fac54d779e5531c823abdb3052c4'
 app.config['MYSQL_DB'] = 'd6pl9uevndo9so'
@@ -31,9 +35,13 @@ def login():
 
 
 @app.route('/verificar', methods=['GET', 'POST'])
-def verificar(): 
+def verificar():
    password = request.form['password']
    name= request.form['nombre']
+   """
+    Le falta verificación con la base de datos que ingreso, tuve que revisar el
+    codigo para poder iniciar sesión.
+   """
    if password== '1234' and name=='mneyra':
     return render_template('index.html')
    else :
@@ -49,13 +57,16 @@ def buscarCliente():
         data = cur.fetchall()
     except cur.Exception as identifier:
         flash('Error de datos')
-    
-    
+
+
     cur.close()
     return  render_template('index.html', contacts = data)
 
 @app.route('/index', methods=['POST'])
 def Index():
+    """
+        Falto manejo de excepción en esta llamada a la base de datos
+    """
     cur = mysql.cursor()
     cur.execute('SELECT * FROM cliente')
     data = cur.fetchall()
@@ -68,6 +79,11 @@ def paquetes():
 
 @app.route('/add_contact', methods=['POST'])
 def add_contact():
+    """
+        Falto manejo de excepción en esta llamada a la base de datos, adicional
+        a esto le falto verificación de datos ingresados, ya que me deja ingresar
+        valores de texto en el numero de telefono :)
+    """
     if request.method == 'POST':
         cedula = request.form['cedula']
         name = request.form['nombre']
@@ -96,6 +112,11 @@ def get_contact(cedula):
 
 @app.route('/update/<cedula>', methods=['POST'])
 def update_contact(cedula):
+    """
+        Falto manejo de excepción en esta llamada a la base de datos, adicional
+        a esto le falto verificación de datos ingresados, ya que me deja ingresar
+        valores de texto en el numero de telefono :)
+    """
     if request.method == 'POST':
         nombre = request.form['nombre']
         apellidoA = request.form['apellidoA']
@@ -112,7 +133,15 @@ def update_contact(cedula):
 
 @app.route('/add_paquete', methods = ['POST', 'GET'])
 def add_paquete():
-    if request.method == 'POST':        
+    """
+        Es recomendado hacer una validación en la base de datos para verificar
+        si el valor que se esta buscando (en este caso cliente), si no esta
+        manejar esta situación no como un error, si no mostrando un mensaje
+        en el cual se informe que este cliente no existe, ya que en la prueba
+        el servidor se cayo debido a que no encontro a un usuario de prueba,
+        al mal manejo de este error.
+    """
+    if request.method == 'POST':
         cedula = request.form['cedula']
         fecha= datetime.datetime.now()
         print(fecha)
