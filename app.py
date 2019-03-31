@@ -51,7 +51,7 @@ def buscarCliente():
         flash('Error de datos')
     
     
-  #  cur.close()
+    cur.close()
     return  render_template('index.html', contacts = data)
 
 @app.route('/index', methods=['POST'])
@@ -59,7 +59,7 @@ def Index():
     cur = mysql.cursor()
     cur.execute('SELECT * FROM cliente')
     data = cur.fetchall()
-   # cur.close()
+    cur.close()
     return render_template('index.html', contacts = data)
 
 @app.route('/paquetes')
@@ -76,17 +76,20 @@ def add_contact():
         apellidoA = request.form['apellidoA']
         apellidoB = request.form['apellidoB']
         cur = mysql.cursor()
+        cur.execute("rollback")
         cur.execute("INSERT INTO cliente (cedula, nombre, apellidoP,apellidoD, direccion, telefono) VALUES (%s,%s,%s,%s,%s,%s)", (cedula, name, apellidoA,apellidoB,direccion,phone))
-        mysql.commit()
+        cur.commit()
         flash('Cliente añadido exitosamente')
+        cur.close()
         return render_template('index.html',contacts = ())
 
 @app.route('/edit/<cedula>', methods = ['POST', 'GET'])
 def get_contact(cedula):
     cur = mysql.cursor()
+    cur.execute("rollback")
     cur.execute('SELECT * FROM cliente WHERE cedula = '+ cedula)
     data = cur.fetchall()
-    #cur.close()
+    cur.close()
     print(data[0])
     return render_template('edit-contact.html', contact = data[0])
 
@@ -99,9 +102,11 @@ def update_contact(cedula):
         telefono = request.form['telefono']
         direccion = request.form['direccion']
         cur = mysql.cursor()
+        cur.execute("rollback")
         cur.execute(" UPDATE cliente SET nombre = %s,apellidoP = %s,apellidoD = %s,telefono =%s,direccion =%s WHERE cedula ="+cedula, (nombre, apellidoA, apellidoB,telefono,direccion))
         flash('Cliente actualizado')
-        mysql.commit()
+        cur.commit()
+        cur.close()
         return render_template('index.html',contacts = ())
 
 @app.route('/add_paquete', methods = ['POST', 'GET'])
@@ -117,19 +122,22 @@ def add_paquete():
         nombreRecibe = request.form['nombreRecibe']
         cur = mysql.cursor()
         try:
+            cur.execute("rollback")
             cur.execute("INSERT INTO paquete (cedula, fecha_Despacho,ciudad_origen, ciudad_destino,Npiezas, direccion_destino,nombre_recibe) VALUES ('"+cedula+"','"+str(fecha)+"',%s,%s,%s,%s,%s)", ( ciudadOrigen,ciudadDestino,Npiezas,direccion,nombreRecibe))
-            mysql.commit()
+            cur.commit()
         except Exception as e:
             raise(e)
         flash('Paquete añadido exitosamente')
+        cur.close()
     return render_template('index.html',contacts = ())
 
 @app.route('/envios/<string:cedula>', methods=['GET', 'POST'])
 def envios(cedula):
     cur = mysql.cursor()
+    cur.execute("rollback")
     cur.execute('SELECT * FROM paquete where cedula = '+cedula)
     data = cur.fetchall()
-    #cur.close()
+    cur.close()
     return  render_template('lista_paquetes.html', contacts = data)
 
 if __name__ == "__main__":
