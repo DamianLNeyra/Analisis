@@ -78,7 +78,7 @@ def add_contact():
         cur = mysql.cursor()
         cur.execute("rollback")
         cur.execute("INSERT INTO cliente (cedula, nombre, apellidoP,apellidoD, direccion, telefono) VALUES (%s,%s,%s,%s,%s,%s)", (cedula, name, apellidoA,apellidoB,direccion,phone))
-        cur.commit()
+        mysql.commit()
         flash('Cliente añadido exitosamente')
         cur.close()
         return render_template('index.html',contacts = ())
@@ -89,6 +89,7 @@ def get_contact(cedula):
     cur.execute("rollback")
     cur.execute('SELECT * FROM cliente WHERE cedula = '+ cedula)
     data = cur.fetchall()
+    mysql.commit()
     cur.close()
     print(data[0])
     return render_template('edit-contact.html', contact = data[0])
@@ -105,7 +106,7 @@ def update_contact(cedula):
         cur.execute("rollback")
         cur.execute(" UPDATE cliente SET nombre = %s,apellidoP = %s,apellidoD = %s,telefono =%s,direccion =%s WHERE cedula ="+cedula, (nombre, apellidoA, apellidoB,telefono,direccion))
         flash('Cliente actualizado')
-        cur.commit()
+        mysql.commit()
         cur.close()
         return render_template('index.html',contacts = ())
 
@@ -124,10 +125,10 @@ def add_paquete():
         try:
             cur.execute("rollback")
             cur.execute("INSERT INTO paquete (cedula, fecha_Despacho,ciudad_origen, ciudad_destino,Npiezas, direccion_destino,nombre_recibe) VALUES ('"+cedula+"','"+str(fecha)+"',%s,%s,%s,%s,%s)", ( ciudadOrigen,ciudadDestino,Npiezas,direccion,nombreRecibe))
-            cur.commit()
         except Exception as e:
             raise(e)
         flash('Paquete añadido exitosamente')
+        mysql.commit()
         cur.close()
     return render_template('index.html',contacts = ())
 
@@ -137,6 +138,7 @@ def envios(cedula):
     cur.execute("rollback")
     cur.execute('SELECT * FROM paquete where cedula = '+cedula)
     data = cur.fetchall()
+    mysql.commit()
     cur.close()
     return  render_template('lista_paquetes.html', contacts = data)
 
