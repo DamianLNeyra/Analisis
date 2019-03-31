@@ -5,7 +5,8 @@ import datetime
 #n
 # initializations
 app = Flask(__name__)
-
+PORT = 5000
+DEBUG = False
 # Mysql Connection
 
 app.config['MYSQL_HOST'] = 'ec2-75-101-131-79.compute-1.amazonaws.com' 
@@ -128,4 +129,4 @@ def envios(cedula):
     return  render_template('lista_paquetes.html', contacts = data)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=PORT, debug=DEBUG)
