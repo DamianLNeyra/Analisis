@@ -77,7 +77,7 @@ def add_contact():
         apellidoB = request.form['apellidoB']
         cur = mysql.cursor()
         cur.execute("INSERT INTO cliente (cedula, nombre, apellidoP,apellidoD, direccion, telefono) VALUES (%s,%s,%s,%s,%s,%s)", (cedula, name, apellidoA,apellidoB,direccion,phone))
-        mysql.connection.commit()
+        mysql.commit()
         flash('Cliente añadido exitosamente')
         return render_template('index.html',contacts = ())
 
@@ -101,7 +101,7 @@ def update_contact(cedula):
         cur = mysql.cursor()
         cur.execute(" UPDATE cliente SET nombre = %s,apellidoP = %s,apellidoD = %s,telefono =%s,direccion =%s WHERE cedula ="+cedula, (nombre, apellidoA, apellidoB,telefono,direccion))
         flash('Cliente actualizado')
-        mysql.connection.commit()
+        mysql.commit()
         return render_template('index.html',contacts = ())
 
 @app.route('/add_paquete', methods = ['POST', 'GET'])
@@ -118,7 +118,7 @@ def add_paquete():
         cur = mysql.cursor()
         try:
             cur.execute("INSERT INTO paquete (cedula, fecha_Despacho,ciudad_origen, ciudad_destino,Npiezas, direccion_destino,nombre_recibe) VALUES ('"+cedula+"','"+str(fecha)+"',%s,%s,%s,%s,%s)", ( ciudadOrigen,ciudadDestino,Npiezas,direccion,nombreRecibe))
-            mysql.connection.commit()
+            mysql.commit()
         except Exception as e:
             raise(e)
         flash('Paquete añadido exitosamente')
