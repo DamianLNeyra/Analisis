@@ -51,7 +51,7 @@ def buscarCliente():
         flash('Error de datos')
     
     
-    cur.close()
+  #  cur.close()
     return  render_template('index.html', contacts = data)
 
 @app.route('/index', methods=['POST'])
@@ -59,7 +59,7 @@ def Index():
     cur = mysql.cursor()
     cur.execute('SELECT * FROM cliente')
     data = cur.fetchall()
-    cur.close()
+   # cur.close()
     return render_template('index.html', contacts = data)
 
 @app.route('/paquetes')
@@ -86,7 +86,7 @@ def get_contact(cedula):
     cur = mysql.cursor()
     cur.execute('SELECT * FROM cliente WHERE cedula = '+ cedula)
     data = cur.fetchall()
-    cur.close()
+    #cur.close()
     print(data[0])
     return render_template('edit-contact.html', contact = data[0])
 
@@ -129,7 +129,7 @@ def envios(cedula):
     cur = mysql.cursor()
     cur.execute('SELECT * FROM paquete where cedula = '+cedula)
     data = cur.fetchall()
-    cur.close()
+    #cur.close()
     return  render_template('lista_paquetes.html', contacts = data)
 
 if __name__ == "__main__":
