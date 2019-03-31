@@ -8,10 +8,10 @@ app = Flask(__name__)
 
 # Mysql Connection
 
-app.config['MYSQL_HOST'] = 'localhost' 
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Pi3141592654'
-app.config['MYSQL_DB'] = 'transporte'
+app.config['MYSQL_HOST'] = 'ec2-75-101-131-79.compute-1.amazonaws.com' 
+app.config['MYSQL_USER'] = 'jgamnxsjtrmrsk'
+app.config['MYSQL_PASSWORD'] = 'b58c12ebaad31303d9b202e8eda197b66436fac54d779e5531c823abdb3052c4'
+app.config['MYSQL_DB'] = 'd6pl9uevndo9so'
 mysql = MySQL(app)
 
 # settings
@@ -127,5 +127,4 @@ def envios(cedula):
     cur.close()
     return  render_template('lista_paquetes.html', contacts = data)
 # starting the app
-if __name__ == "__main__":
-    app.run(port=3307, debug=True)
+
