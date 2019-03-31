@@ -126,5 +126,4 @@ def envios(cedula):
     data = cur.fetchall()
     cur.close()
     return  render_template('lista_paquetes.html', contacts = data)
-# starting the app
 
